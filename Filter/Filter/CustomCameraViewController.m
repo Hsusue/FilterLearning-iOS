@@ -429,7 +429,7 @@ API_AVAILABLE(ios(10.0))
         }
     }
     
-    // 处理设备旋转问题
+    // 处理设备旋转镜像问题
     UIDeviceOrientation orientation = UIDevice.currentDevice.orientation;
     CGAffineTransform transform;
     if (orientation == UIDeviceOrientationPortrait) {
@@ -443,6 +443,9 @@ API_AVAILABLE(ios(10.0))
     }
     else {
         transform = CGAffineTransformMakeRotation(0.0);
+    }
+    if ([[self.cameraDeviceInput device] position] == AVCaptureDevicePositionFront) {// 前置要镜像
+        result = [result imageByApplyingOrientation:UIImageOrientationUpMirrored];
     }
     result = [result imageByApplyingTransform:transform];
     CGImageRef cgImage = [_ciContext createCGImage:result fromRect:result.extent];
